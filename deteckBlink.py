@@ -10,12 +10,12 @@ import threading
 
 cam=cv2.VideoCapture(0)
 eye_thresh=0.2
-mouth_thresh=0.73
+mouth_thresh=0.74
 counter=0
-consec_frames=10 
+consec_frames=9 
 alarmRing=False
 total=0
-consec_yawn_frames=10 #mouth duration
+consec_yawn_frames=8 #mouth duration
 yawn=0
 counter_yawn=0
 
