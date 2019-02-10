@@ -20,7 +20,7 @@ yawn=0
 counter_yawn=0
 
 def alert():
-     cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
+     #cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
      winsound.Beep(1000, 1000)
 
 
@@ -35,8 +35,9 @@ def check_yawn(mouth):
     else:
         if counter_yawn>=consec_yawn_frames:
             yawn+=1
-            t1=threading.Thread(target=alert(),args=())
             counter_yawn=0
+            t1=threading.Thread(target=alert,args=())
+            t1.daemon=True
             t1.start()
             
 
@@ -49,7 +50,8 @@ def check_eye():
             if counter >= consec_frames:
                 total += 1
                 counter = 0 #back to zero
-                t2=threading.Thread(target=alert(),args=())
+                t2=threading.Thread(target=alert,args=())   #NEVER PUT PARENTHESIS WITH THE FUNCTION NAME, OTHERWISE ALERT WILL BE CALLED
+                t2.daemon=True                                #INSIDE THIS CODE BLOCK WITHOUT MULTITHREADING
                 t2.start()
 
         cv2.putText(frame, "Blinks: {}".format(total), (10, 30),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
