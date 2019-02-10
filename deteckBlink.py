@@ -9,20 +9,23 @@ import winsound
 import threading
 
 cam=cv2.VideoCapture(0)
-eye_thresh=0.2
-mouth_thresh=0.74
+eye_thresh=0.15
+mouth_thresh=1.00
 counter=0
-consec_frames=9 
+consec_frames=10 
 alarmRing=False
 total=0
-consec_yawn_frames=8 #mouth duration
+consec_yawn_frames=10 #mouth duration
 yawn=0
 counter_yawn=0
 
-def alert():
-     #cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
-     winsound.Beep(1000, 1000)
+def alert1():
+     cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
+     winsound.Beep(1000, 1100)
 
+def alert2():
+     cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
+     winsound.Beep(2000, 2100)
 
 def check_yawn(mouth):
     global counter_yawn,mouth_thresh,yawn
@@ -32,27 +35,27 @@ def check_yawn(mouth):
     mar=A/(C+D)
     if mar<mouth_thresh:                    #this ratio should be greater than 2.1 for a person who is not yawning
         counter_yawn=counter_yawn+1
-    else:
         if counter_yawn>=consec_yawn_frames:
             yawn+=1
             counter_yawn=0
-            t1=threading.Thread(target=alert,args=())
+            t1=threading.Thread(target=alert2,args=())
             t1.daemon=True
             t1.start()
+         
             
 
 def check_eye():
         global counter,ear,eye_thresh,total
         if ear < eye_thresh:
             counter =counter+1
-            
-        else:
             if counter >= consec_frames:
                 total += 1
                 counter = 0 #back to zero
-                t2=threading.Thread(target=alert,args=())   #NEVER PUT PARENTHESIS WITH THE FUNCTION NAME, OTHERWISE ALERT WILL BE CALLED
+                t2=threading.Thread(target=alert1,args=())   #NEVER PUT PARENTHESIS WITH THE FUNCTION NAME, OTHERWISE ALERT WILL BE CALLED
                 t2.daemon=True                                #INSIDE THIS CODE BLOCK WITHOUT MULTITHREADING
                 t2.start()
+            
+                   
 
         cv2.putText(frame, "Blinks: {}".format(total), (10, 30),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
         cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
