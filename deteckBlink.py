@@ -23,6 +23,7 @@ def alert():
      cv2.putText(frame, "ALERT (Alarm ringing) ", (10, 300),cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 255), 2)
      winsound.Beep(1000, 1000)
 
+
 def check_yawn(mouth):
     global counter_yawn,mouth_thresh,yawn
     A=distance.euclidean(mouth[0],mouth[6]) #mouth[0] is a list of (x,y) point
@@ -35,8 +36,9 @@ def check_yawn(mouth):
         if counter_yawn>=consec_yawn_frames:
             yawn+=1
             t1=threading.Thread(target=alert(),args=())
-            t1.start()
             counter_yawn=0
+            t1.start()
+            
 
 def check_eye():
         global counter,ear,eye_thresh,total
