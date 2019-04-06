@@ -69,7 +69,7 @@ def eye_aspect_ratio(eye):
 
 #Read the corresponding points from the face detector which are marked with numbers
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('E:/CSE/CV/project/shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('E:/CSE/CV/project/shape_predictor_68_face_landmarks.dat') #add the custom path
 
 (lStart, lEnd) = (42,48)	#points corresponding to eye and mouth
 (rStart, rEnd) = (36,42)
